@@ -1,16 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar';
+import { Typography } from '@material-ui/core';
+
+import { format, compareAsc } from 'date-fns';
+import parseISO from 'date-fns/parseISO';
+
+const StyledTableRow = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.action.hover,
+  },
+}))(TableRow);
 
 const rows = [];
 
@@ -25,7 +35,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === "desc"
+  return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -41,17 +51,54 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: "avatar", numeric: true, disablePadding: false, label: "Avatar" },
-  { id: "fullName", numeric: true, disablePadding: false, label: "Full Name" },
-  { id: "birthday", numeric: true, disablePadding: false, label: "Birthday" },
-  { id: "email", numeric: true, disablePadding: false, label: "Email" },
-  { id: "phone", numeric: true, disablePadding: false, label: "Phone" },
-  { id: "location", numeric: true, disablePadding: false, label: "Location" },
   {
-    id: "nationality",
+    id: 'avatar',
+    numeric: false,
+    disablePadding: false,
+    label: 'Avatar',
+    align: 'left',
+  },
+  {
+    id: 'fullName',
+    numeric: false,
+    disablePadding: false,
+    label: 'Full Name',
+    align: 'left',
+  },
+  {
+    id: 'birthday',
     numeric: true,
     disablePadding: false,
-    label: "Nationality",
+    label: 'Birthday',
+    align: 'left',
+  },
+  {
+    id: 'email',
+    numeric: true,
+    disablePadding: false,
+    label: 'Email',
+    align: 'left',
+  },
+  {
+    id: 'phone',
+    numeric: true,
+    disablePadding: false,
+    label: 'Phone',
+    align: 'left',
+  },
+  {
+    id: 'location',
+    numeric: true,
+    disablePadding: false,
+    label: 'Location',
+    align: 'left',
+  },
+  {
+    id: 'nationality',
+    numeric: false,
+    disablePadding: false,
+    label: 'Nationality',
+    align: 'right',
   },
 ];
 
@@ -63,29 +110,29 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow>
+      <StyledTableRow>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={"center"}
-            padding={headCell.disablePadding ? "none" : "default"}
+            align={headCell.align}
+            padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
+              direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
               ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
-      </TableRow>
+      </StyledTableRow>
     </TableHead>
   );
 }
@@ -93,29 +140,29 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
   },
   paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
+    width: '100%',
+    marginBottom: theme.spacing(1),
   },
   table: {
     minWidth: 750,
   },
   visuallyHidden: {
     border: 0,
-    clip: "rect(0 0 0 0)",
+    clip: 'rect(0 0 0 0)',
     height: 1,
     margin: -1,
-    overflow: "hidden",
+    overflow: 'hidden',
     padding: 0,
-    position: "absolute",
+    position: 'absolute',
     top: 20,
     width: 1,
   },
@@ -123,15 +170,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable(props) {
   const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
@@ -171,7 +218,7 @@ export default function EnhancedTable(props) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={"small"}
+            size={'small'}
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -194,34 +241,37 @@ export default function EnhancedTable(props) {
                       <TableCell>
                         <Avatar src={row.picture.thumbnail} />
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="left">
                         {row.name.title} {row.name.first} {row.name.last}
                       </TableCell>
-                      <TableCell>{row.dob.age} years </TableCell>
-                      <TableCell>{row.email} </TableCell>
-                      <TableCell>{row.cell} </TableCell>
-                      <TableCell>
-                        {" "}
-                        {row.location.country}, {row.location.state},{" "}
-                        {row.location.city}, {row.location.street.number},{" "}
-                        {row.location.street.name}
+                      <TableCell align="left">
+                        <Typography>
+                          {format(
+                            parseISO(row.dob.date),
+                            'EEEE, M/d/yyyy, K-mm a'
+                          )}
+                        </Typography>
+                        <Typography>{row.dob.age} years</Typography>
                       </TableCell>
-                      <TableCell>{row.nat} </TableCell>
+                      <TableCell align="left">{row.email} </TableCell>
+                      <TableCell align="left">{row.cell} </TableCell>
+                      <TableCell align="left">
+                        <Typography>/{row.location.country}/</Typography>
+                        <Typography>
+                          {row.location.state}, {row.location.city},
+                        </Typography>
+                        <Typography>
+                          {row.location.street.name}
+                          {row.location.street.number}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">{row.nat} </TableCell>
                     </TableRow>
                   );
                 })}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
       </Paper>
     </div>
   );

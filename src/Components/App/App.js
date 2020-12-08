@@ -1,11 +1,12 @@
-import "./App.css";
-import { makeStyles } from "@material-ui/core/styles";
-import Header from "../Header/Header";
-import SearchAppBar from "../SearchPanel/SearchPanel";
-import MainTable from "../MainTable/MainTable";
-import Footer from "../Footer/Footer";
-import Grid from "@material-ui/core/Grid";
-import { useContacts } from "./useContacts";
+import './App.css';
+import { makeStyles } from '@material-ui/core/styles';
+import Header from '../Header/Header';
+import SearchAppBar from '../SearchPanel/SearchPanel';
+import MainTable from '../MainTable/MainTable';
+import Footer from '../Footer/Footer';
+import Grid from '@material-ui/core/Grid';
+import { useContacts } from './useContacts';
+import Paginations from '../Paginations/Paginations';
 
 const useStyles = makeStyles((theme) => ({
   // root: {
@@ -36,6 +37,9 @@ function App() {
         </Grid>
         <Grid className={classes.appGrid} item xs={12}>
           <Footer contacts={contacts} />
+        </Grid>
+        <Grid className={classes.appGrid} item xs={12}>
+          <Paginations contacts={contacts} />
         </Grid>
       </Grid>
     </div>
