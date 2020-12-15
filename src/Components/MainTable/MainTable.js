@@ -1,9 +1,14 @@
-import ContactsTable from "../ContactsTable/ContactsTable";
-import { Paper } from "@material-ui/core";
+import ContactsTable from '../ContactsTable/ContactsTable';
+import { Paper } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const MainTable = (props) => {
   if (props.contacts.isLoading) {
-    return <div>...Loading</div>;
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    );
   }
 
   if (props.contacts.isError) {

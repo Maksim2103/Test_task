@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -6,23 +6,21 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import { Typography } from '@material-ui/core';
 
-import { format, compareAsc } from 'date-fns';
+import { format } from 'date-fns';
 import parseISO from 'date-fns/parseISO';
+import TableNationality from '../TableNationality/TableNationality';
 
 const StyledTableRow = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.action.hover,
   },
 }))(TableRow);
-
-const rows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -54,49 +52,42 @@ const headCells = [
   {
     id: 'avatar',
     numeric: false,
-    disablePadding: false,
     label: 'Avatar',
     align: 'left',
   },
   {
     id: 'fullName',
     numeric: false,
-    disablePadding: false,
     label: 'Full Name',
     align: 'left',
   },
   {
     id: 'birthday',
     numeric: true,
-    disablePadding: false,
     label: 'Birthday',
     align: 'left',
   },
   {
     id: 'email',
     numeric: true,
-    disablePadding: false,
     label: 'Email',
     align: 'left',
   },
   {
     id: 'phone',
     numeric: true,
-    disablePadding: false,
     label: 'Phone',
     align: 'left',
   },
   {
     id: 'location',
     numeric: true,
-    disablePadding: false,
     label: 'Location',
     align: 'left',
   },
   {
     id: 'nationality',
     numeric: false,
-    disablePadding: false,
     label: 'Nationality',
     align: 'right',
   },
@@ -115,7 +106,6 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             align={headCell.align}
-            padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -170,11 +160,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable(props) {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('birthday');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -202,14 +192,14 @@ export default function EnhancedTable(props) {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   return (
     <div className={classes.root}>
@@ -230,42 +220,45 @@ export default function EnhancedTable(props) {
             <TableBody>
               {stableSort(props.data, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
+                .map((person, index) => {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, person.name)}
                       tabIndex={-1}
-                      key={row.login.uuid}
+                      key={person.login.uuid}
                     >
                       <TableCell>
-                        <Avatar src={row.picture.thumbnail} />
+                        <Avatar src={person.picture.thumbnail} />
                       </TableCell>
                       <TableCell align="left">
-                        {row.name.title} {row.name.first} {row.name.last}
+                        {person.name.title} {person.name.first}{' '}
+                        {person.name.last}
                       </TableCell>
                       <TableCell align="left">
                         <Typography>
                           {format(
-                            parseISO(row.dob.date),
+                            parseISO(person.dob.date),
                             'EEEE, M/d/yyyy, K-mm a'
                           )}
                         </Typography>
-                        <Typography>{row.dob.age} years</Typography>
+                        <Typography>{person.dob.age} years</Typography>
                       </TableCell>
-                      <TableCell align="left">{row.email} </TableCell>
-                      <TableCell align="left">{row.cell} </TableCell>
+                      <TableCell align="left">{person.email} </TableCell>
+                      <TableCell align="left">{person.cell} </TableCell>
                       <TableCell align="left">
-                        <Typography>/{row.location.country}/</Typography>
+                        <Typography>/{person.location.country}/</Typography>
                         <Typography>
-                          {row.location.state}, {row.location.city},
+                          {person.location.state}, {person.location.city},
                         </Typography>
                         <Typography>
-                          {row.location.street.name}
-                          {row.location.street.number}
+                          {person.location.street.name}
+                          {person.location.street.number}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">{row.nat} </TableCell>
+                      <TableCell align="right">
+                        <TableNationality person={person.nat} />
+                      </TableCell>
                     </TableRow>
                   );
                 })}
