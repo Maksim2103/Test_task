@@ -4,7 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import SearchName from '../SearchPanel/SearhName/SearchName';
 import SearchGender from '../SearchPanel/SearchGender/SearchGender';
 import SearchNationality from '../SearchPanel/SearchNationality/SearchNationality';
-import { Button } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,8 +33,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({
+  getGenderValue,
+  getNationalityValue,
+  setFiltered,
+  getFullName,
+}) {
   const classes = useStyles();
+
+  const handleResetFiltersAll = () => {
+    setFiltered({});
+  };
 
   return (
     <div>
@@ -44,16 +55,20 @@ export default function SearchAppBar() {
           className={classes.searchPanelGrid}
         >
           <Grid className={classes.searchPanelGridName}>
-            <SearchName />
+            <SearchName getFullName={getFullName} />
           </Grid>
           <Grid className={classes.searchPanelGridGender}>
-            <SearchGender />
+            <SearchGender getGenderValue={getGenderValue} />
           </Grid>
           <Grid className={classes.searchPanelGridNationality}>
-            <SearchNationality />
+            <SearchNationality getNationalityValue={getNationalityValue} />
           </Grid>
           <Grid className={classes.searchPanelGridButton}>
-            <Button>X Clear</Button>
+            <Tooltip title="Reset filters" arrow placement="top">
+              <IconButton onClick={handleResetFiltersAll}>
+                <ClearIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </Paper>

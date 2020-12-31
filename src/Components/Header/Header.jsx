@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Box, Grid, Typography } from '@material-ui/core';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
@@ -5,11 +6,20 @@ import { Button } from '@material-ui/core';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    '&$selected': {
+      backgroundColor: theme.palette.info.light,
+      '&:hover': {
+        backgroundColor: theme.palette.info.main,
+      },
+    },
+  },
+  selected: {},
+
   gridIcons: {
     padding: theme.spacing(1),
   },
@@ -18,12 +28,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ tableView, setFiltered, setTableView }) => {
   const classes = useStyles();
-  const [view, setView] = useState('list');
 
-  const handleChange = (event, nextView) => {
-    setView(nextView);
+  const handleChangeViewMode = (_, nextView) => {
+    if (nextView !== null) {
+      setTableView(nextView);
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem('tableViewMode', tableView);
+  }, [tableView]);
+
+  const handleReloadPage = () => {
+    window.location.reload();
   };
 
   return (
@@ -43,15 +62,38 @@ const Header = () => {
         justify="flex-end"
         alignItems="center"
       >
-        <Button>
-          <RefreshIcon className={classes.icons} fontSize="large" />
-        </Button>
-        <ToggleButtonGroup value={view} exclusive onChange={handleChange}>
-          <ToggleButton value="list" aria-label="list">
-            <ViewListIcon />
+        <Tooltip title="Reload page" arrow>
+          <Button>
+            <RefreshIcon
+              className={classes.icons}
+              fontSize="large"
+              onClick={handleReloadPage}
+            />
+          </Button>
+        </Tooltip>
+        <ToggleButtonGroup
+          value={tableView}
+          exclusive
+          onChange={handleChangeViewMode}
+        >
+          <ToggleButton
+            classes={{ root: classes.root, selected: classes.selected }}
+            value="grid"
+            aria-label="grid"
+          >
+            <Tooltip title="Grid view" arrow>
+              <ViewModuleIcon />
+            </Tooltip>
           </ToggleButton>
-          <ToggleButton value="module" aria-label="module">
-            <ViewModuleIcon />
+
+          <ToggleButton
+            classes={{ root: classes.root, selected: classes.selected }}
+            value="table"
+            aria-label="table"
+          >
+            <Tooltip title="Table view" arrow>
+              <ViewListIcon />
+            </Tooltip>
           </ToggleButton>
         </ToggleButtonGroup>
       </Grid>

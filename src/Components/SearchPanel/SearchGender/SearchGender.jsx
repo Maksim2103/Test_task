@@ -1,32 +1,25 @@
-/* eslint-disable no-use-before-define */
-import React from "react";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { makeStyles } from "@material-ui/core/styles";
+import { useState, useCallback } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const useStyles = makeStyles({
-  root: {
-    borderRadius: 13,
-    border: 0,
-    fontSize: 36,
-    // height: 48,
-  },
-  label: {
-    textTransform: "capitalize",
-    color: "white",
-  },
-});
+const genderList = ['Male', 'Female'];
 
-const genderList = [{ title: "Male" }, { title: "Female" }];
+export default function SearchGender({ getGenderValue }) {
+  const [genderValue, setGenderValue] = useState('');
 
-export default function SearchGender() {
-  const classes = useStyles();
-
+  const onChange = useCallback(
+    (e, value, reason) => {
+      setGenderValue(value);
+      getGenderValue(value, reason);
+    },
+    [getGenderValue]
+  );
   return (
     <Autocomplete
-      id="combo-box-demo"
+      value={genderValue}
       options={genderList}
-      getOptionLabel={(option) => option.title}
+      getOptionSelected={(option) => option}
+      onInputChange={onChange}
       renderInput={(params) => (
         <TextField {...params} label="Gender" variant="outlined" />
       )}

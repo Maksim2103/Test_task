@@ -2,8 +2,8 @@ import ContactsTable from '../ContactsTable/ContactsTable';
 import { Paper } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const MainTable = (props) => {
-  if (props.contacts.isLoading) {
+const MainTable = ({ data, isError, isLoading }) => {
+  if (isLoading) {
     return (
       <div>
         <CircularProgress />
@@ -11,13 +11,13 @@ const MainTable = (props) => {
     );
   }
 
-  if (props.contacts.isError) {
+  if (isError) {
     return <div>...Error</div>;
   }
 
   return (
     <Paper elevation={3}>
-      <ContactsTable data={props.contacts.data} />
+      <ContactsTable data={data} />
     </Paper>
   );
 };

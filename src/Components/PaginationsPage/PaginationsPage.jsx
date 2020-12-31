@@ -11,12 +11,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Paginations() {
+export default function PaginationsPage({ handlerPageNumber, pageCount }) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Pagination count={2} shape="rounded" />
+      <Pagination
+        count={pageCount}
+        shape="rounded"
+        onClick={(e) => {
+          handlerPageNumber(e.target.innerText);
+        }}
+      />
     </div>
   );
 }

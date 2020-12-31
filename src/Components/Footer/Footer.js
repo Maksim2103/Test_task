@@ -11,11 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { NATIONALITIES } from '../../Constats/Nationalities/nationalities';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { GENDER_VALUE } from '../Constants/constants';
 
 const useStyles = makeStyles((theme) => ({
   footerContainer: {
     padding: theme.spacing(2),
-    // textAlign: "center",
     color: theme.palette.text.secondary,
     display: 'flex',
     justifyContent: 'flex-start',
@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Footer = (props) => {
+const Footer = ({ data, isError, isLoading }) => {
   const classes = useStyles();
 
-  if (props.contacts.isLoading) {
+  if (isLoading) {
     return (
       <div>
         <CircularProgress />
@@ -50,18 +50,18 @@ const Footer = (props) => {
     );
   }
 
-  if (props.contacts.isError) {
+  if (isError) {
     return <div>...Error</div>;
   }
 
-  const genderCollections = props.contacts.data.reduce(
+  const genderCollections = data.reduce(
     (acc, el) => {
       switch (el.gender) {
-        case 'male':
+        case GENDER_VALUE.MALE:
           return { ...acc, male: acc.male + 1 };
-        case 'female':
+        case GENDER_VALUE.FEMALE:
           return { ...acc, female: acc.female + 1 };
-        case 'indeterminate':
+        case GENDER_VALUE.INDERMINATE:
           return { ...acc, indeterminate: acc.indeterminate + 1 };
         default:
           return acc;
@@ -72,23 +72,23 @@ const Footer = (props) => {
 
   const genderPredominate = () => {
     if (maleNum > femaleNum && maleNum > indeterminateNum) {
-      return 'male';
+      return GENDER_VALUE.MALE;
     }
     if (maleNum < femaleNum && femaleNum > indeterminateNum) {
-      return 'female';
+      return GENDER_VALUE.FEMALE;
     }
     if (maleNum < indeterminateNum && indeterminateNum > femaleNum) {
-      return 'inderminate';
+      return GENDER_VALUE.INDERMINATE;
     }
-    return 'Nobody';
+    return GENDER_VALUE.NOBODY;
   };
 
-  const allNum = props.contacts.data.length;
+  const allNum = data.length;
   const maleNum = genderCollections.male;
   const femaleNum = genderCollections.female;
   const indeterminateNum = genderCollections.indeterminate;
 
-  const nationalitiesCollections = props.contacts.data.reduce(
+  const nationalitiesCollections = data.reduce(
     (acc, el) => {
       switch (el.nat) {
         case 'AU':
@@ -197,9 +197,7 @@ const Footer = (props) => {
               .map(([key, value]) => {
                 return (
                   <div key={key}>
-                    <div fontSize="14px" color="red">
-                      {NATIONALITIES[key].nat}:
-                    </div>
+                    <div>{NATIONALITIES[key].nat}:</div>
                     <div>{value} contacts</div>
                   </div>
                 );

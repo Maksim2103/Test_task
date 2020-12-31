@@ -1,23 +1,3 @@
-// export const NATIONALITIES = {
-//   AU: { nat: 'Australian', color: 'red' },
-//   BR: 'Brazilian',
-//   CA: 'Canadian',
-//   CH: 'Chiness',
-//   DE: 'German',
-//   DK: 'Danish',
-//   ES: 'Estonian',
-//   FI: 'Finnish',
-//   FR: 'French',
-//   GB: 'British',
-//   IE: 'Irish',
-//   IR: 'Iranian',
-//   NO: 'Norwegian',
-//   NL: 'Dutch',
-//   NZ: 'New Zelander',
-//   TR: 'Turkish',
-//   US: 'American',
-// };
-
 export const NATIONALITIES = {
   AU: { nat: 'Australian', color: 'white', bgcolor: '#F98866' },
   BR: { nat: 'Brazilian', color: 'white', bgcolor: '#FF420E' },

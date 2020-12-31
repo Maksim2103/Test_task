@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchName() {
+export default function SearchName({ getFullName }) {
   const classes = useStyles();
 
   return (
@@ -19,6 +19,9 @@ export default function SearchName() {
       variant="outlined"
       id="input-with-icon-textfield"
       label="Search by full name"
+      onChange={(e) => {
+        getFullName(e.target.value);
+      }}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
