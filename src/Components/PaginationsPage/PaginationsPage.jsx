@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 
@@ -11,17 +13,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PaginationsPage({ handlerPageNumber, pageCount }) {
+export default function PaginationsPage({ onChange, pageCount }) {
   const classes = useStyles();
+
+  const handleChangePage = useCallback(
+    (_, page) => {
+      onChange(page);
+    },
+    [onChange]
+  );
 
   return (
     <div className={classes.root}>
       <Pagination
         count={pageCount}
         shape="rounded"
-        onClick={(e) => {
-          handlerPageNumber(e.target.innerText);
-        }}
+        onChange={handleChangePage}
       />
     </div>
   );

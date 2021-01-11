@@ -1,5 +1,10 @@
 export const NATIONALITIES = {
-  AU: { nat: 'Australian', color: 'white', bgcolor: '#F98866' },
+  AU: {
+    nat: 'Australian',
+    color: 'white',
+    bgcolor: '#F98866',
+    shortName: 'AU',
+  },
   BR: { nat: 'Brazilian', color: 'white', bgcolor: '#FF420E' },
   CA: { nat: 'Canadian', color: 'white', bgcolor: '#80BD9E' },
   CH: { nat: 'Chiness', color: '#444444', bgcolor: '#cfd8dc' },
@@ -17,3 +22,28 @@ export const NATIONALITIES = {
   TR: { nat: 'Turkish', color: '#f1f8e9', bgcolor: '#33691e' },
   US: { nat: 'American', color: '#fff3e0', bgcolor: '#ef6c00' },
 };
+
+// export const NATIONALITIES = [
+//   {
+//     nat: 'Australian',
+//     color: 'white',
+//     bgcolor: '#F98866',
+//     shortName: 'AU',
+//   },
+//   { nat: 'Brazilian', color: 'white', bgcolor: '#FF420E', shortName: 'BR' },
+//   { nat: 'Canadian', color: 'white', bgcolor: '#80BD9E', shortName: 'CA' },
+//   { nat: 'Chiness', color: '#444444', bgcolor: '#cfd8dc', shortName: 'CH' },
+//   { nat: 'German', color: 'white', bgcolor: '#8d6e63', shortName: 'DE' },
+//   { nat: 'Danish', color: 'MediumBlue', bgcolor: 'LightCyan', shortName: 'DK' },
+//   { nat: 'Estonian', color: '#4a148c', bgcolor: '#e1bee7', shortName: 'ES' },
+//   { nat: 'Finnish', color: '#880e4f', bgcolor: '#f48fb1', shortName: 'FI' },
+//   { nat: 'French', color: '#b71c1c', bgcolor: '#ffcdd2', shortName: 'FR' },
+//   { nat: 'British', color: '#0d47a1', bgcolor: '#bbdefb', shortName: 'GB' },
+//   { nat: 'Irish', color: '#311b92', bgcolor: '#d1c4e9', shortName: 'IE' },
+//   { nat: 'Iranian', color: '#d1c4e9', bgcolor: '#311b92', shortName: 'IR' },
+//   { nat: 'Norwegian', color: '#e1f5fe', bgcolor: '#0277bd', shortName: 'NO' },
+//   { nat: 'Dutch', color: '#e0f7fa', bgcolor: '#006064', shortName: 'NL' },
+//   { nat: 'Zelander', color: '#004d40', bgcolor: '#b2dfdb', shortName: 'NZ' },
+//   { nat: 'Turkish', color: '#f1f8e9', bgcolor: '#33691e', shortName: 'TR' },
+//   { nat: 'American', color: '#fff3e0', bgcolor: '#ef6c00', shortName: 'US' },
+// ];

@@ -8,9 +8,9 @@ import {
   TableBody,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { NATIONALITIES } from '../../Constats/Nationalities/nationalities';
 import Box from '@material-ui/core/Box';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
+import { NATIONALITIES } from '../../Constats/Nationalities/nationalities';
 import { GENDER_VALUE } from '../Constants/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,9 +26,13 @@ const useStyles = makeStyles((theme) => ({
   },
   typographyPredominate: {
     backgroundColor: 'yellow',
-    marginLeft: '170px',
     width: '130px',
     fontSize: '14px',
+    align: 'center',
+  },
+  typograthyBox: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   rowFirstTable: {
     fontSize: '24px',
@@ -39,20 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Footer = ({ data, isError, isLoading }) => {
+const Footer = ({ data }) => {
   const classes = useStyles();
-
-  if (isLoading) {
-    return (
-      <div>
-        <CircularProgress />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return <div>...Error</div>;
-  }
 
   const genderCollections = data.reduce(
     (acc, el) => {
@@ -90,44 +82,7 @@ const Footer = ({ data, isError, isLoading }) => {
 
   const nationalitiesCollections = data.reduce(
     (acc, el) => {
-      switch (el.nat) {
-        case 'AU':
-          return { ...acc, AU: acc.AU + 1 };
-        case 'BR':
-          return { ...acc, BR: acc.BR + 1 };
-        case 'CA':
-          return { ...acc, CA: acc.CA + 1 };
-        case 'CH':
-          return { ...acc, CH: acc.CH + 1 };
-        case 'DE':
-          return { ...acc, DE: acc.DE + 1 };
-        case 'DK':
-          return { ...acc, DK: acc.DK + 1 };
-        case 'ES':
-          return { ...acc, ES: acc.ES + 1 };
-        case 'FI':
-          return { ...acc, FI: acc.FI + 1 };
-        case 'FR':
-          return { ...acc, FR: acc.FR + 1 };
-        case 'GB':
-          return { ...acc, GB: acc.GB + 1 };
-        case 'IE':
-          return { ...acc, IE: acc.IE + 1 };
-        case 'IR':
-          return { ...acc, IR: acc.IR + 1 };
-        case 'NO':
-          return { ...acc, NO: acc.NO + 1 };
-        case 'NL':
-          return { ...acc, NL: acc.NL + 1 };
-        case 'NZ':
-          return { ...acc, NZ: acc.NZ + 1 };
-        case 'TR':
-          return { ...acc, TR: acc.TR + 1 };
-        case 'US':
-          return { ...acc, US: acc.US + 1 };
-        default:
-          return acc;
-      }
+      return { ...acc, [el.nat]: acc[el.nat] + 1 };
     },
     {
       AU: 0,
@@ -181,9 +136,11 @@ const Footer = ({ data, isError, isLoading }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Typography className={classes.typographyPredominate}>
-            {genderPredominate()} predominate
-          </Typography>
+          <Box className={classes.typograthyBox}>
+            <Typography className={classes.typographyPredominate}>
+              {genderPredominate()} predominate
+            </Typography>
+          </Box>
         </div>
         <div>
           <Typography variant="h5">Nationality</Typography>

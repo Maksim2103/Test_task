@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { Box, Grid, Typography } from '@material-ui/core';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({ tableView, setFiltered, setTableView }) => {
+const Header = ({ tableView, setTableView, reloadFetch }) => {
   const classes = useStyles();
 
   const handleChangeViewMode = (_, nextView) => {
@@ -42,7 +43,7 @@ const Header = ({ tableView, setFiltered, setTableView }) => {
   }, [tableView]);
 
   const handleReloadPage = () => {
-    window.location.reload();
+    reloadFetch();
   };
 
   return (
